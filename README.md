@@ -1,17 +1,22 @@
 Experimenting with Custom Elements.
 ===================================
 
-As part of our Hoverboards and Flying Cars (What cool things should we be doing in 2014 and 2015?) hackday our team decided to investigate Custom Elements - a Web Components spec.
+As part of Caplin's Hoverboards and Flying Cars (What cool things should we be doing in 2014 and 2015?) hackday our team decided to investigate Custom Elements - a Web Components spec.
 
-Web Components
---------------
+Web Components?
+---------------
 
 The [Web Components](http://w3c.github.io/webcomponents/explainer/) model consists of four specs.
 
+* [Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html)
 * [Custom Elements](http://w3c.github.io/webcomponents/spec/custom/)
 * [Shadow DOM](http://w3c.github.io/webcomponents/spec/shadow/)
-* [Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html)
 * [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
+ 
+When used together the aim of these specs is to allow developers to easily create widgets that have the same power, ease of composition and encapsulation as native browser widgets. This should allow faster development and easy reuse of previously built or thirdparty widgets.
+
+
+
 
 ```javascript
 var SimpleModalPrototype = Object.create(HTMLElement.prototype);
