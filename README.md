@@ -15,7 +15,9 @@ The [Web Components](http://w3c.github.io/webcomponents/explainer/) model consis
  
 When used together the aim of these specs is to allow developers to easily create widgets that have the same power, ease of composition and encapsulation as native browser widgets. This should allow faster development and easy reuse of previously built or thirdparty widgets.
 
+For the hack day, being time constrained, we chose to focus on only one of the specs, Custom Elements.
 
+The reasoning behind creating the Custom Elements spec was to allow Web developers to build their own, fully-featured DOM elements and to explain how the platform works.
 
 
 ```javascript
