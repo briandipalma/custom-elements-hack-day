@@ -3,11 +3,15 @@ Experimenting with Custom Elements.
 
 As part of our Hoverboards and Flying Cars (What cool things should we be doing in 2014 and 2015?) hackday our team decided to investigate Custom Elements - a Web Components spec.
 
-Short explaination of Web Components and specs that are part of it.
+Web Components
+--------------
 
-* Custom Elements
-* Shadow DOM
-* Templates
+The [Web Components](http://w3c.github.io/webcomponents/explainer/) model consists of four specs.
+
+* [Custom Elements](http://w3c.github.io/webcomponents/spec/custom/)
+* [Shadow DOM](http://w3c.github.io/webcomponents/spec/shadow/)
+* [Templates](https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html)
+* [HTML Imports](http://w3c.github.io/webcomponents/spec/imports/)
 
 ```javascript
 var SimpleModalPrototype = Object.create(HTMLElement.prototype);
