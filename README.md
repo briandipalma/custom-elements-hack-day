@@ -17,7 +17,10 @@ When used together the aim of these specs is to allow developers to easily creat
 
 For the hack day, being time constrained, we chose to focus on only one of the specs, Custom Elements.
 
-The reasoning behind creating the Custom Elements spec was to allow Web developers to build their own, fully-featured DOM elements and to explain how the platform works.
+There were two reasons driving the creation of the Custom Elements spec
+
+* to allow Web developers to build their own, fully-featured DOM elements
+* as part of the [Extensible Web Manifesto](http://extensiblewebmanifesto.org/) to explain how the browser platform works and take away the magic from browser elements by explaining them with primitives that developers have access to
 
 
 ```javascript
@@ -34,5 +37,3 @@ var SimpleModal = document.registerElement('simple-modal', {
 
 Semantically richer, can use normal DOM methods and standard platform methods, lifecycle is handled by browser, more cohesiveness "the responsibility of understanding how operations affect elements lies with the UA, which has comprehensive knowledge of this now and into the future, and not with the author."
 
-
-http://extensiblewebmanifesto.org/
