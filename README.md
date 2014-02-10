@@ -22,16 +22,53 @@ There were two reasons driving the creation of the Custom Elements spec
 * to allow Web developers to build their own, fully-featured DOM elements
 * as part of the [Extensible Web Manifesto](http://extensiblewebmanifesto.org/) to take away the magic from browser elements by explaining them with primitives that developers have access to
 
+What's in it for me?
+--------------------
+
 For web developers there are several advantages of Custom Elements over the "DOM-as-a-render-view scaffolding" approach that they are currently forced to take.
 Custom Elements are semantically richer, making it much easier to understand which elements map onto which application widget, providing a cleaner and clearer DOM structure.
+
 They are treated the same as native elements by the browser this means they can use and can be used by standard platform DOM methods.
 This allows them to be more easily composed compared to heterogeneous framework or library widgets.
-It also means developers would only need to know the DOM APIs to be able to use Custom Elements unlike the current situation were it seems every six months a new framework or library gains popularity with its own APIs and concepts. 
+It also means developers would only need to know the DOM APIs to be able to use Custom Elements unlike the current situation were it seems every six months a new framework or library gains popularity with its own APIs and concepts.
+
 The lifecycle of Custom Elements is handled by the browser, so the developer no longer needs to worry about trying to keep track of when a widget is added or removed from the DOM, the browser will
 deal with those issues for him and provide appropriate notifications. They can also help with cohesiveness as they are the obvious place to store all the view logic relevant to a widget.
 
 How do I create them?
 ---------------------
+
+There isn't much to creating a Custom Element, firstly you must create a JavaScript object which can fulfill some, all or none of the Custom Elements API (the element definition) and then you must register that JavaScript object, along with the Custom Element name, with the browser (element registration) so it can create your element when it's asked to.
+
+The element definition is a small API, one point to note though is that the JavaScript object that is used for the Custom Element definition must extend a DOM class.
+The element definition serves as the prototype of the custom element instantiation.
+
+Here's an example of a Custom Element definition.
+
+```javascript
+//Extending a DOM class with Object.create().
+var CustomElementPrototype = Object.create(HTMLElement.prototype);
+
+CustomElementPrototype.createdCallback = function() {
+	//called when a custom element is created.
+};
+
+CustomElementPrototype.attachedCallback = function() {
+	//called when a custom element is inserted into the DOM.
+};
+
+CustomElementPrototype.detachedCallback = function() {
+	//called when a custom element is removed from the DOM.
+};
+
+CustomElementPrototype.attributeChangedCallback = function(attributeName, oldValue, newValue) {
+	//called when a custom element's attribute value has changed.
+};
+```
+
+Note that the `attachedCallback` and `detachedCallback` methods have been renamed in the latest draft Custom Elements spec to `enteredViewCallback` and `leftViewCallback`
+
+detachedCallback/attached look to end up being enteredView
 
 ```javascript
 var SimpleModalPrototype = Object.create(HTMLElement.prototype);
