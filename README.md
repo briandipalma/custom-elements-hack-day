@@ -66,9 +66,19 @@ CustomElementPrototype.attributeChangedCallback = function(attributeName, oldVal
 };
 ```
 
-Note that the `attachedCallback` and `detachedCallback` methods have been renamed in the latest draft Custom Elements spec to `enteredViewCallback` and `leftViewCallback`
+Note that the `attachedCallback` and `detachedCallback` method names are the [subject of some debate](https://www.w3.org/Bugs/Public/show_bug.cgi?id=24314) so they may change.
 
-detachedCallback/attached look to end up being enteredView
+The registration is very simple, a call to the `document.registerElement` method.
+
+```javascript
+var CustomElement = document.registerElement('custom-element', {
+  prototype: CustomElementPrototype
+});
+```
+
+The first argument to the `document.registerElement` method is the name of the Custom Element. A rule that Custom Element names must follow is that they must contain a hyphen; this allows new native elements to be added to browsers without triggering name clashes with Custom Elements.
+
+This is one of the advantages to using libraries like [X-Tag](http://www.x-tags.org/index) or the more broad scoped [Polymer](http://www.polymer-project.org/) they will
 
 ```javascript
 var SimpleModalPrototype = Object.create(HTMLElement.prototype);
