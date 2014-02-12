@@ -76,7 +76,34 @@ var CustomElement = document.registerElement('custom-element', {
 });
 ```
 
-The first argument to the `document.registerElement` method is the name of the Custom Element. A rule that Custom Element names must follow is that they must contain a hyphen; this allows new native elements to be added to browsers without triggering name clashes with Custom Elements.
+The first argument to the `document.registerElement` method is the name of the Custom Element. A rule that Custom Element names must follow is that they must contain a hyphen; this allows new native elements to be added to browsers without causing name clashes with Custom Elements.
+The second argument are the element registration options that specify the prototype of the Custom Element and what native element your Custom Element extends if it extends one.
+
+### Wait, I can extend native elements? ###
+
+Yes you can and it's quite trivial. There are a few changes required to the definition, registration and usage of the Custom Element though.
+
+Firstly you must extend the DOM element you wish to sub-type instead of the generic `HTMLElement`.
+
+```javascript
+//Extending a DOM button with Object.create().
+var CustomButtonElementPrototype = Object.create(HTMLButtonElement.prototype);
+```
+
+Then you must specify the element tag for the your elements super-type when registering.
+
+```javascript
+var CustomButtonElement = document.registerElement('custom-button-element', {
+  prototype: CustomButtonElementPrototype,
+  extends: "button"
+});
+```
+
+And finally if you plan on using HTML markup to create your element then you need to declare what type it is.
+
+```HTML
+<button is="custom-button-element"></button>
+```
 
 This is one of the advantages to using libraries like [X-Tag](http://www.x-tags.org/index) or the more broad scoped [Polymer](http://www.polymer-project.org/) they will
 
