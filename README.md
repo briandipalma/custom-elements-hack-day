@@ -105,16 +105,55 @@ And finally if you plan on using HTML markup to create your element then you nee
 <button is="custom-button-element"></button>
 ```
 
-This is one of the advantages to using libraries like [X-Tag](http://www.x-tags.org/index) or the more broad scoped [Polymer](http://www.polymer-project.org/) they will
+Can I use them?
+---------------
+
+Custom Elements is a small spec and it hasn't been standardized yet, but they can still be used. As usual with the web, implementation is leading standardization.
+They are about to [roll into stable Chrome](https://code.google.com/p/chromium/issues/detail?id=180965) with Chrome 33 and Firefox [is close behind](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
+For other browsers there are ways of supporting Custom Elements via [the Custom Elements polyfill](https://github.com/polymer/CustomElements), this polyfill is tested to work with IE10+ and all modern browsers.
+
+The polyfill is the simplest way to support Custom Elements in all browsers (it's available [via npm and bower](https://www.npmjs.org/package/customelements)) but there are other ways.
+
+The [X-Tag](http://www.x-tags.org/index) project includes polyfills that allow it to support IE9+, it provides Custom Element and HTMLImport support.
+There is also the more broad scoped [Polymer project](http://www.polymer-project.org/) they include polyfills for many new web standards including Pointer Events, their browser support is IE10+.
+
+IE8 support may be a possibility but not with the exact same workflow as in other browsers. Custom Elements in IE9+ are supported by using DOM Mutation Events, these are events which fire when the DOM is changed (node inserts or removals etc).
+The polyfill reacts to and upgrades any newly inserted Custom Elements but Mutation Events aren't supported in IE8 so Custom Elements are never upgraded. The workaround that suggests itself is for the developer to manually trigger a Custom Element upgrade in IE8.
+It's not ideal and it takes away some of the benefits of Custom Elements but it allows future friendly development.
+
+How we built our Custom Elements
+--------------------------------
+
+For the hackday we decided to use [Polymer platform](https://github.com/Polymer/platform) which is a collection of all Polymer polyfills. If all you want is Custom Elements support it may be easier to use the stand alone polyfill or the
+[X-Tag core polyfill](https://github.com/x-tag/core) which is smaller than the Polymer one.
+
+We then started to create as many Custom Elements as we could. The first one was a wrapper around our current FxTile, it turned out to be easy to wrap the current set of widgets with custom elements.
+
+```HTML
+<caplin-tile currencyPair="EURUSD" amount="6000"></caplin-tile>
+```
+
+Adding one of our FxTiles became as easy as adding some markup. All the logic of creating a tile was encapsulated within our `CaplinTile` class.
 
 ```javascript
-var SimpleModalPrototype = Object.create(HTMLElement.prototype);
+var CaplinTilePrototype = Object.create(HTMLElement.prototype);
 
-SimpleModalPrototype.createdCallback = function() {
-  this.textContent = "I'm a simple-modal!";
+CaplinTilePrototype.attachedCallback = function() {
+	var amount = this.getAttribute("amount"),
+		currencyPair = this.getAttribute("currencyPair");
+    
+    //Create an FxTile and get the tile element - tileElement.
+
+    this.appendChild(tileElement);
 };
 
-var SimpleModal = document.registerElement('simple-modal', {
-  prototype: SimpleModalPrototype
-});
+CaplinTilePrototype.attributeChangedCallback = function(name, oldValue, newValue) {
+	//Handle DOM attribute changes by notifying the tile.
+};
+
+document.registerElement("caplin-tile", {prototype: CaplinTilePrototype});
 ```
+
+The `this` pointer for a Custom Element is the DOM element, the `appendChild` is happening on the Custom Element.
+There's no need for any framework or library specific API, just use well known DOM APIs to build your view.
+Another aspect of Custom Elements we experimented with was changing the model based on DOM attribute values changing on the element.
