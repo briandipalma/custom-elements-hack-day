@@ -84,7 +84,7 @@ var CustomElement = document.registerElement('custom-element', {
 ```
 
 The first argument to the `document.registerElement` method is the name of the Custom Element. Custom Element names must contain a hyphen. 
-This is to prevent name clashes between new browser elements and Custom Elements.
+This is to prevent name clashes between future browser element names and Custom Elements.
 The second argument is the element registration object. Use it to specify the `prototype` of the Custom Element and what native element your Custom Element extends if it extends one.
 
 ### Wait, I can extend native elements? ###
