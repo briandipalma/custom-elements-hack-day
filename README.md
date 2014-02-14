@@ -17,7 +17,7 @@ The specifications aims are to allow developers to create elements.
 These elements will have the same power, ease of composition and encapsulation as native browser elements.
 This will allow for faster development and easier reuse of GUI components.
 
-For the hack day, being time constrained, we chose to focus on only one of the specifications, Custom Elements. Custom Elements are developer created custom DOM elements. 
+For the hack day, being time constrained, we chose to focus on only one of the specifications, Custom Elements. Custom Elements are developer created custom DOM elements. They are the foundation of Web Components.
 
 There were two reasons driving the creation of the Custom Elements specification
 
