@@ -30,7 +30,7 @@ It aims to take the magic away from the web platform. Providing an API for eleme
 What's in it for me?
 --------------------
 
-Currently developers use the DOM as view scaffolding. Custom Elements have several advantages over that approach though. 
+Currently developers use the DOM as view scaffolding. Custom Elements have several advantages over that approach. 
 Custom Elements allow clear semantics. It's easy to understand the mapping between elements and GUI component code. They result in a cleaner and clearer DOM structure.
 
 The browser treats them as native elements. This means the browser can use them in its DOM methods.
