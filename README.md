@@ -40,13 +40,14 @@ Developers only need to know the DOM APIs to be able to use Custom Elements. Cur
 The browser handles the life cycle of Custom Elements. The developer no longer needs to keep track of addition or removal of a component from the DOM. The browser will
 deal with those issues for him and provide appropriate notifications. They also help cohesiveness as they are the obvious place to store all the view logic relevant to a component.
 
-How do I create them?
+How do I make them?
 ---------------------
 
-There isn't much to creating a Custom Element, firstly you must create a JavaScript object which can fulfill some, all or none of the Custom Elements API (the element definition) and then you must register that JavaScript object, along with the Custom Element name, with the browser (element registration) so it can create your element when it's asked to.
+Making a Custom Element is simple. Create a JavaScript object which can fulfill some, all or none of the Custom Elements API (the element definition).
+Then register the object with the browser (element registration), using your chosen element name. This allows the browser to create your element when it's asked to.
 
-The element definition is a small API, one point to note though is that the JavaScript object that is used for the Custom Element definition must extend a DOM class.
-The element definition serves as the prototype of the custom element instantiation.
+The element definition is a small API. Note that the element definition must extend a DOM class.
+The element definition serves as the `prototype` of the custom element instantiation.
 
 Here's an example of a Custom Element definition.
 
@@ -71,9 +72,9 @@ CustomElementPrototype.attributeChangedCallback = function(attributeName, oldVal
 };
 ```
 
-Note that the `attachedCallback` and `detachedCallback` method names are the [subject of some debate](https://www.w3.org/Bugs/Public/show_bug.cgi?id=24314) so they may change.
+The `attachedCallback` and `detachedCallback` names are the [subject of some debate](https://www.w3.org/Bugs/Public/show_bug.cgi?id=24314). So they may change.
 
-The registration is very simple, a call to the `document.registerElement` method.
+The registration is simple, a call to the `document.registerElement` method.
 
 ```javascript
 var CustomElement = document.registerElement('custom-element', {
@@ -81,21 +82,22 @@ var CustomElement = document.registerElement('custom-element', {
 });
 ```
 
-The first argument to the `document.registerElement` method is the name of the Custom Element. A rule that Custom Element names must follow is that they must contain a hyphen; this allows new native elements to be added to browsers without causing name clashes with Custom Elements.
-The second argument are the element registration options that specify the prototype of the Custom Element and what native element your Custom Element extends if it extends one.
+The first argument to the `document.registerElement` method is the name of the Custom Element. Custom Element names must contain a hyphen. 
+This is to prevent name clashes between new browser elements and Custom Elements.
+The second argument is the element registration object. Use it to specify the `prototype` of the Custom Element and what native element your Custom Element extends if it extends one.
 
 ### Wait, I can extend native elements? ###
 
 Yes you can and it's quite trivial. There are a few changes required to the definition, registration and usage of the Custom Element though.
 
-Firstly you must extend the DOM element you wish to sub-type instead of the generic `HTMLElement`.
+First you must extend the DOM element you wish to sub-type instead of the generic `HTMLElement`.
 
 ```javascript
 //Extending a DOM button with Object.create().
 var CustomButtonElementPrototype = Object.create(HTMLButtonElement.prototype);
 ```
 
-Then you must specify the element tag for the your elements super-type when registering.
+Then you must specify the element tag for your element's super-type when registering.
 
 ```javascript
 var CustomButtonElement = document.registerElement('custom-button-element', {
@@ -113,23 +115,25 @@ And finally if you plan on using HTML markup to create your element then you nee
 Can I use them?
 ---------------
 
-Custom Elements is a small specification and it hasn't been standardized yet, but they can still be used. As usual with the web, implementation is leading standardization.
-They are about to [roll into stable Chrome](https://code.google.com/p/chromium/issues/detail?id=180965) with Chrome 33 and Firefox [is close behind](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
-For other browsers there are ways of supporting Custom Elements via [the Custom Elements polyfill](https://github.com/polymer/CustomElements), this polyfill is tested to work with IE10+ and all modern browsers.
+Custom Elements is not standardized yet, they are at the Last Call Draft stage. That's not an impediment to using them though.
+As usual with the web, implementation is leading standardization.
 
-The polyfill is the simplest way to support Custom Elements in all browsers (it's available [via npm and bower](https://www.npmjs.org/package/customelements)) but there are other ways.
+They are in [Chrome beta](https://code.google.com/p/chromium/issues/detail?id=180965) and Firefox [is implementing them](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
+[The Custom Elements polyfill](https://github.com/polymer/CustomElements) provides Custom Elements support in other browsers. It supports IE10+ and all modern browsers.
 
-The [X-Tag](http://www.x-tags.org/index) project includes polyfills that allow it to support IE9+, it provides Custom Element and HTMLImport support.
-There is also the more broad scoped [Polymer project](http://www.polymer-project.org/) they include polyfills for many new web standards including Pointer Events, their browser support is IE10+.
+The polyfill is the simplest way to support Custom Elements in browsers. It's available [via npm and bower](https://www.npmjs.org/package/customelements).
 
-IE8 support may be a possibility but not with the exact same workflow as in other browsers. Custom Elements in IE9+ are supported by using DOM Mutation Events, these are events which fire when the DOM is changed (node inserts or removals etc).
-The polyfill reacts to and upgrades any newly inserted Custom Elements but Mutation Events aren't supported in IE8 so Custom Elements are never upgraded. The workaround that suggests itself is for the developer to manually trigger a Custom Element upgrade in IE8.
-It's not ideal and it takes away some of the benefits of Custom Elements but it allows future friendly development.
+The [X-Tag](http://www.x-tags.org/index) polyfills support IE9+, they provides Custom Element and HTMLImport support.
+There is also the [Polymer project](http://www.polymer-project.org/). It includes polyfills for many web standards such as Pointer Events. Their browser support is IE10+.
+
+IE8 support is a possibility but not with the exact same workflow as in other browsers. The Custom Elements polyfill in IE9+ relies on DOM Mutation Events. Changing the DOM (node inserts or removals etc) fires these mutation events.
+The polyfill reacts to these events by upgrading any inserted Custom Elements. Mutation Events, though, aren't supported in IE8. Meaning Custom Elements are never upgraded. Manual Custom Element upgrades for IE8 are a possible workaround.
+It's not ideal and it takes away some of the benefits of Custom Elements but it allows for future friendly development.
 
 How we built our Custom Elements
 --------------------------------
 
-For the hackday we decided to use [Polymer platform](https://github.com/Polymer/platform) which is a collection of all Polymer polyfills. If all you want is Custom Elements support it may be easier to use the stand alone polyfill or the
+For the hackday we used [Polymer platform](https://github.com/Polymer/platform). It's a collection of all the Polymer polyfills. If all you want is Custom Elements support it may be easier to use the stand alone polyfill or the
 [X-Tag core polyfill](https://github.com/x-tag/core) which is smaller than the Polymer one.
 
 We then started to create as many Custom Elements as we could. The first one was a wrapper around our current FxTile, it turned out to be easy to wrap the current set of widgets with custom elements.
@@ -138,7 +142,7 @@ We then started to create as many Custom Elements as we could. The first one was
 <caplin-tile currencyPair="EURUSD" amount="6000"></caplin-tile>
 ```
 
-Adding one of our FxTiles became as easy as adding some markup. All the logic of creating a tile was encapsulated within our `CaplinTile` class.
+Adding one of our FxTiles became as easy as adding some markup. The `CaplinTile` Custom Element encapsulates all the logic of creating a tile.
 
 ```javascript
 var CaplinTilePrototype = Object.create(HTMLElement.prototype);
@@ -161,8 +165,8 @@ document.registerElement("caplin-tile", {prototype: CaplinTilePrototype});
 
 The `this` pointer for a Custom Element is the DOM element, the `appendChild` is happening on the Custom Element.
 There's no need for any framework or library specific API, just use well known DOM APIs to build your view.
-Another aspect of Custom Elements we experimented with was changing the model based on DOM attributes changing.
-So if you changed the `currencyPair` or `amount` attribute you would modify the model and therefore the tile.
+We also experimented with changing the model via DOM attributes.
+Changing the `currencyPair` or `amount` attribute modifies the tile via the model.
 
 Wrapping existing widgets is not recommend when using Custom Elements but the lack of time meant we had to chose that route.
 A better approach would have been to compose the `caplin-tile` from other Custom Elements.
@@ -181,9 +185,9 @@ A better approach would have been to compose the `caplin-tile` from other Custom
 </caplin-tile>
 ```
 
-It was positive that it was so easy to integrate Custom Elements with already existing widgets. It bodes well for upgrading to them in a phased approach.
+It was positive that it was so easy to integrate Custom Elements with existing UI components. It bodes well for upgrading to them in a phased approach.
 
-Along with wrapping a Caplin tile we wrapped our grid (`caplin-grid`), fxticket (`caplin-outright-ticket`) and created a custom element tabbed panel.
+We also wrapped our grid (`caplin-grid`) and fxticket (`caplin-outright-ticket`). To layout all these components we created a custom element tabbed panel.
 
 ```HTML
 <caplin-tabbed-panel>
@@ -199,10 +203,10 @@ Along with wrapping a Caplin tile we wrapped our grid (`caplin-grid`), fxticket 
 </caplin-tabbed-panel>
 ```
 
-The `caplin-tabbed-panel` took its children and created a tab for each, clicking on a tab would display the child and hide the previously displayed one.
+The `caplin-tabbed-panel` took its children and created a tab for each. Clicking a tab hides the currently visible child and displays the selected child.
 The `name` attribute of each child was the text value of each tab. Custom Elements turned out to be a natural and pleasant way to build a GUI.
 
-To allow us to resize the `caplin-tabbed-panel` a `caplin-flex-box` was created.
+The `caplin-flex-box` followed which allowed for the resizing of any child elements.
 
 ```HTML
 <caplin-flex-box direction="column">
@@ -216,10 +220,10 @@ To allow us to resize the `caplin-tabbed-panel` a `caplin-flex-box` was created.
 ```
 
 It uses the `direction` attribute to decide how to layout its child nodes. Either on top of each other (column) or side by side (row).
-Draggable splitters are inserted between the child nodes to allow resizing.
+Inserting draggable splitters between the child nodes allowed resizing.
 
 We had time to create a floating panel element that you could drag around the web page and which could contain other elements.
-So of course we added one of the elements we created.
+We then added one of the elements we created.
 
 ```javascript
 var dialog = document.createElement('caplin-floating-panel');
@@ -230,14 +234,14 @@ dialog.appendChild(caplinOutrightTicket);
 document.body.appendChild(dialog);
 ```
 
-The code above can be understood by almost any web developer.
+The code above is understandable by almost any web developer.
 Platform knowledge is all that's needed to work with Custom Elements.
 
 Verdict
 -------
 
-Conceptually it makes sense to think of layout panels, widgets and controls as elements.
-These is no mystery as to how they work or how to use them, it's DOM 101.
+Thinking of layout panels, components and controls as elements is a simple but powerful concept.
+These is no mystery in how they work or how to use them, it's DOM 101.
 They allow web developers to create cohesive, transparent and composable UI components.
 
 So, Custom Elements. Two thumbs up.
