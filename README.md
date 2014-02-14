@@ -207,7 +207,7 @@ We also wrapped our grid (`caplin-grid`) and fxticket (`caplin-outright-ticket`)
 The `caplin-tabbed-panel` took its children and created a tab for each. Clicking a tab hides the currently visible child and displays the selected child.
 The `name` attribute of each child was the text value of each tab. Custom Elements turned out to be a natural and pleasant way to build a GUI.
 
-The `caplin-flex-box` followed which allowed for the resizing of any child elements.
+The `caplin-flex-box` followed which allowed for the resizing of its child elements.
 
 ```HTML
 <caplin-flex-box direction="column">
