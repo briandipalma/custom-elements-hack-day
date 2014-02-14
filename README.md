@@ -124,7 +124,7 @@ They are in [Chrome beta](https://code.google.com/p/chromium/issues/detail?id=18
 
 The polyfill is the simplest way to support Custom Elements in browsers. It's available [via npm and bower](https://www.npmjs.org/package/customelements).
 
-The [X-Tag](http://www.x-tags.org/index) polyfills support IE9+, they provides Custom Element and HTMLImport support.
+The [X-Tag](http://www.x-tags.org/index) polyfills support IE9+, they provide Custom Element and HTMLImport support.
 There is also the [Polymer project](http://www.polymer-project.org/). It includes polyfills for many web standards such as Pointer Events. Their browser support is IE10+.
 
 IE8 support is a possibility but not with the exact same workflow as in other browsers. The Custom Elements polyfill in IE9+ relies on DOM Mutation Events. Changing the DOM (node inserts or removals etc) fires these mutation events.
