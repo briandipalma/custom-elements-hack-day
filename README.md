@@ -45,7 +45,7 @@ How do I make them?
 ---------------------
 
 Making a Custom Element is simple. Create a JavaScript object which can fulfill some, all or none of the Custom Elements API (the element definition).
-Then register the object with the browser (element registration), using your chosen element name. This allows the browser to create your element when it's asked to.
+Then, using your chosen element name, register the object with the browser (element registration). This allows the browser to create your element when it's asked to.
 
 The element definition is a small API. Note that the element definition must extend a DOM class.
 The element definition serves as the `prototype` of the custom element instantiation.
