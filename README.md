@@ -82,3 +82,13 @@ CustomElementPrototype.attributeChangedCallback = function(attributeName, oldVal
 The `attachedCallback` and `detachedCallback` names are the [subject of some debate](https://www.w3.org/Bugs/Public/show_bug.cgi?id=24314). So they may change.
 
 The registration is simple, a call to the `document.registerElement` method.
+
+```javascript
+var CustomElement = document.registerElement('custom-element', {
+  prototype: CustomElementPrototype
+});
+```
+
+The first argument to the `document.registerElement` method is the name of the Custom Element. Custom Element names must contain a hyphen. 
+This is to prevent name clashes between future browser element names and Custom Elements.
+The second argument is the element registration object. Use it to specify the `prototype` of the Custom Element and what native element your Custom Element extends if it extends one.
