@@ -78,3 +78,7 @@ CustomElementPrototype.attributeChangedCallback = function(attributeName, oldVal
 	//called when a custom element's attribute value has changed.
 };
 ```
+
+The `attachedCallback` and `detachedCallback` names are the [subject of some debate](https://www.w3.org/Bugs/Public/show_bug.cgi?id=24314). So they may change.
+
+The registration is simple, a call to the `document.registerElement` method.
