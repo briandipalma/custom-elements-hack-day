@@ -57,3 +57,24 @@ The element definition is a small API. Note that the element definition must ext
 The element definition serves as the `prototype` of the custom element instantiation.
 
 Here's an example of a Custom Element definition.
+
+```javascript
+//Extending a DOM class with Object.create().
+var CustomElementPrototype = Object.create(HTMLElement.prototype);
+
+CustomElementPrototype.createdCallback = function() {
+	//called when a custom element is created.
+};
+
+CustomElementPrototype.attachedCallback = function() {
+	//called when a custom element is inserted into the DOM.
+};
+
+CustomElementPrototype.detachedCallback = function() {
+	//called when a custom element is removed from the DOM.
+};
+
+CustomElementPrototype.attributeChangedCallback = function(attributeName, oldValue, newValue) {
+	//called when a custom element's attribute value has changed.
+};
+```
