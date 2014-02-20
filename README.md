@@ -98,3 +98,19 @@ The second argument is the element registration object. Use it to specify the `p
 Yes you can and it's quite trivial. There are a few changes required to the definition, registration and usage of the Custom Element though.
 
 First you must extend the DOM element you wish to sub-type instead of the generic `HTMLElement`.
+
+```javascript
+//Extending a DOM button with Object.create().
+var CustomButtonElementPrototype = Object.create(HTMLButtonElement.prototype);
+```
+
+Then you must specify the element tag for your element's super-type when registering.
+
+```javascript
+var CustomButtonElement = document.registerElement('custom-button-element', {
+  prototype: CustomButtonElementPrototype,
+  extends: "button"
+});
+```
+
+And if you use HTML markup to create your element then you need to declare what type it is.
