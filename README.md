@@ -115,6 +115,6 @@ var CustomButtonElement = document.registerElement('custom-button-element', {
 
 And if you use HTML markup to create your element then you need to declare what type it is.
 
-```HTML
+```xml
 <button is="custom-button-element"></button>
 ```
