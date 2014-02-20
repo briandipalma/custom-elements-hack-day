@@ -1,5 +1,7 @@
 ---
+layout: index
 permalink: /index.html
+title: Custom-Elements
 ---
 
 Experimenting with Custom Elements.
