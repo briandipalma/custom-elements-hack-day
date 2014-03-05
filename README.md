@@ -118,3 +118,137 @@ And if you use HTML markup to create your element then you need to declare what 
 ```html
 <button is="custom-button-element"></button>
 ```
+
+Can I use them?
+---------------
+
+Custom Elements is not standardized yet, they are at the Last Call Draft stage. That's not an impediment to using them though.
+As usual with the web, implementation is leading standardization.
+
+They are in [Chrome beta](https://code.google.com/p/chromium/issues/detail?id=180965) and Firefox [is implementing them](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
+[The Custom Elements polyfill](https://github.com/polymer/CustomElements) provides Custom Elements support in other browsers. It supports IE10+ and all modern browsers.
+
+The polyfill is the simplest way to support Custom Elements in browsers. It's available [via npm and bower](https://www.npmjs.org/package/customelements).
+
+The [X-Tag](http://www.x-tags.org/index) polyfills support IE9+, they provide Custom Element and ```htmlImport support.
+There is also the [Polymer project](http://www.polymer-project.org/). It includes polyfills for many web standards such as Pointer Events. Their browser support is IE10+.
+
+IE8 support is a possibility but not with the exact same workflow as in other browsers. The Custom Elements polyfill in IE9+ relies on DOM Mutation Events. Changing the DOM (node inserts or removals etc) fires these mutation events.
+The polyfill reacts to these events by upgrading any inserted Custom Elements. Mutation Events, though, aren't supported in IE8. Meaning Custom Elements are never upgraded. Manual Custom Element upgrades for IE8 are a possible workaround.
+It's not ideal and it takes away some of the benefits of Custom Elements but it allows for future friendly development.
+
+How we built our Custom Elements
+--------------------------------
+
+For the hackday we used [Polymer platform](https://github.com/Polymer/platform). It's a collection of all the Polymer polyfills. If all you want is Custom Elements support it may be easier to use the stand alone polyfill or the
+[X-Tag core polyfill](https://github.com/x-tag/core) which is smaller than the Polymer one.
+
+We then started to create as many Custom Elements as we could. The first one was a wrapper around our current FxTile, it turned out to be easy to wrap the current set of widgets with custom elements.
+
+```html
+<caplin-tile currencyPair="EURUSD" amount="6000"></caplin-tile>
+```
+
+Adding one of our FxTiles became as easy as adding some markup. The `CaplinTile` Custom Element encapsulates all the logic of creating a tile.
+
+```javascript
+var CaplinTilePrototype = Object.create(HTMLElement.prototype);
+
+CaplinTilePrototype.attachedCallback = function() {
+	var amount = this.getAttribute("amount"),
+		currencyPair = this.getAttribute("currencyPair");
+    
+    //Create an FxTile and get the tile element - tileElement.
+
+    this.appendChild(tileElement);
+};
+
+CaplinTilePrototype.attributeChangedCallback = function(name, oldValue, newValue) {
+	//Handle DOM attribute changes by notifying the tile.
+};
+
+document.registerElement("caplin-tile", {prototype: CaplinTilePrototype});
+```
+
+The `this` pointer for a Custom Element is the DOM element, the `appendChild` is happening on the Custom Element.
+There's no need for any framework or library specific API, just use well known DOM APIs to build your view.
+We also experimented with changing the model via DOM attributes.
+Changing the `currencyPair` or `amount` attribute modifies the tile via the model.
+
+Wrapping existing widgets is not recommend when using Custom Elements but the lack of time meant we had to chose that route.
+A better approach would have been to compose the `caplin-tile` from other Custom Elements.
+
+```html
+<caplin-tile>
+	<caplin-tile-header></caplin-tile-header>
+	<caplin-tile-one-way-panel>
+		<button is="caplin-toggle-button" name="toggle-buy-sell"></button>
+		<input is="caplin-fx-amount-input"></input>
+		<button is="caplin-toggle-button" name="toggle-dealt-currency"></button>
+		<input is="caplin-fx-date-picker"></input>
+		<button is="caplin-fx-execute-button" side="bid"></button>
+		<button is="caplin-fx-execute-button" side="ask"></button>
+	</caplin-tile-one-way-panel>
+</caplin-tile>
+```
+
+It was positive that it was so easy to integrate Custom Elements with existing UI components. It bodes well for upgrading to them in a phased approach.
+
+We also wrapped our grid (`caplin-grid`) and fxticket (`caplin-outright-ticket`). To layout all these components we created a custom element tabbed panel.
+
+```html
+<caplin-tabbed-panel>
+	<div name="Tile Set">
+		<caplin-tile id='firsttile' currencyPair="GBPUSD" amount="5000"></caplin-tile>
+		<caplin-tile currencyPair="EURUSD" amount="6000"></caplin-tile>
+	</div>
+</caplin-tabbed-panel>
+<caplin-tabbed-panel>
+	<caplin-grid name="Fx.Majors" grid="caplinx.fxblotters.majors"></caplin-grid>
+	<div name="Bob">I am a native element</div>
+	<caplin-grid name="Blotter" grid="caplinx.fxblotters.activity.blotter"></caplin-grid>
+</caplin-tabbed-panel>
+```
+
+The `caplin-tabbed-panel` took its children and created a tab for each. Clicking a tab hides the currently visible child and displays the selected child.
+The `name` attribute of each child was the text value of each tab. Custom Elements turned out to be a natural and pleasant way to build a GUI.
+
+The `caplin-flex-box` followed which allowed for the resizing of its child elements.
+
+```html
+<caplin-flex-box direction="column">
+	<caplin-tabbed-panel>
+		...
+	</caplin-tabbed-panel>
+	<caplin-tabbed-panel>
+		...
+	</caplin-tabbed-panel>
+</caplin-flex-box>
+```
+
+It uses the `direction` attribute to decide how to layout its child nodes. Either on top of each other (column) or side by side (row).
+Inserting draggable splitters between the child nodes allowed resizing.
+
+We had time to create a floating panel element that you could drag around the web page and which could contain other elements.
+We then added one of the elements we created.
+
+```javascript
+var dialog = document.createElement('caplin-floating-panel');
+var caplinOutrightTicket = document.createElement("caplin-outright-ticket");
+
+dialog.appendChild(caplinOutrightTicket);
+
+document.body.appendChild(dialog);
+```
+
+The code above is understandable by almost any web developer.
+Platform knowledge is all that's needed to work with Custom Elements.
+
+Verdict
+-------
+
+Thinking of layout panels, components and controls as elements is a simple but powerful concept.
+These is no mystery in how they work or how to use them, it's DOM 101.
+They allow web developers to create cohesive, transparent and composable UI components.
+
+So, Custom Elements. Two thumbs up.
