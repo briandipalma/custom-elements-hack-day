@@ -119,7 +119,7 @@ Can I use them?
 Custom Elements is not standardized yet, they are at the Last Call Draft stage. That's not an impediment to using them though.
 As usual with the web, implementation is leading standardization.
 
-They are in [Chrome beta](https://code.google.com/p/chromium/issues/detail?id=180965) and Firefox [is implementing them](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
+They are in [Chrome stable](https://code.google.com/p/chromium/issues/detail?id=180965) and Firefox Nightly [implements them](https://bugzilla.mozilla.org/show_bug.cgi?id=856140).
 [The Custom Elements polyfill](https://github.com/polymer/CustomElements) provides Custom Elements support in other browsers. It supports IE10+ and all modern browsers.
 
 The polyfill is the simplest way to support Custom Elements in browsers. It's available [via npm and bower](https://www.npmjs.org/package/customelements).
